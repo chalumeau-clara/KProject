@@ -1,0 +1,37 @@
+Serial Init
+0
+0
+0
+0
+0
+0
+
+ffff
+0
+0
+9a
+cf
+0
+
+ffff
+0
+0
+92
+cf
+0
+
+ffff
+0
+0
+fa
+cf
+0
+
+ffff
+0
+0
+f2
+cf
+0
+
+GDT Init
