@@ -1,6 +1,6 @@
 #include "include/k/types.h" // stddef for size_t
 #include "io.h" // for inb and outb
-#include "include/serial.h"
+#include "include/k/serial.h"
 
 #define COM1_BASE_ADDRESS 0x3f8  // COM1 base address
 #define LCR_OFFSET 0x03

@@ -26,12 +26,16 @@ include ../config.mk
 TARGET	= k
 OBJS	= \
 	  crt0.o \
+      descriptor_tables/gdt.o \
+      descriptor_tables/idt.o \
+      descriptor_tables/isr.o \
+      descriptor_tables/isr_assembleur.o \
+      serial.o \
 	  k.o \
 	  libvga.o \
 	  list.o \
 	  memory.o \
-	  serial.o \
-	  gdt.o \
+
 
 
 DEPS = $(OBJS:.o=.d)

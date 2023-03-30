@@ -25,8 +25,10 @@
 #include <stdio.h>
 
 #include "multiboot.h"
-#include "include/serial.h"
-#include "include/gdt.h"
+#include "k/serial.h"
+#include "k/gdt.h"
+#include "k/idt.h"
+#include "k/isr.h"
 
 void k_main(unsigned long magic, multiboot_info_t *info)
 {
@@ -40,8 +42,18 @@ void k_main(unsigned long magic, multiboot_info_t *info)
     printf("Serial Init\r\n");
 
     init_gdt();
-    printf("GDT Init\r\n");
+    printf("GDT Init\r\n"); // Verify it works
 
+    init_idt();
+    printf("IDT Init\r\n");
+
+    init_isr();
+    printf("ISR init\r\n");
+
+    test_isr();
+    printf("Test isr\r\n");
+
+    //printf("%i", 8/0);
 
     for (unsigned i = 0; ; ) {
 		*fb = star[i++ % 4];

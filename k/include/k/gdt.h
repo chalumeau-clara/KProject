@@ -1,11 +1,14 @@
 //
 // Created by chalu on 2/19/2023.
 //
+// ***************************
+// Global Descriptor Table
+// ***************************
 
 #ifndef K_GDT_H
 #define K_GDT_H
 
-#include "k/types.h"
+#include "types.h"
 
 struct gdt_entry
 {

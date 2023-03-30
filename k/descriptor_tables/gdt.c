@@ -2,7 +2,7 @@
 // Created by chalu on 2/19/2023.
 //
 
-#include "include/gdt.h"
+#include "../include/k/gdt.h"
 #include <stdio.h>
 #define GDT_SIZE 5
 static gdt_e gdt[GDT_SIZE];
@@ -11,6 +11,7 @@ void gdt_pretty_print()
 {
     for (size_t i = 0; i < GDT_SIZE; i++)
     {
+        // Print in hexadecimal
         printf("%x\r\n", gdt[i].limit);
         printf("%x\r\n", gdt[i].base_address);
         printf("%x\r\n", gdt[i].base_address_low);
@@ -81,7 +82,7 @@ void init_gdt()
     // Task State Segment
     // TODO
 
-    gdt_pretty_print();
+    //gdt_pretty_print();
 
     // Load GDT
     asm volatile("lgdt %0\n"
