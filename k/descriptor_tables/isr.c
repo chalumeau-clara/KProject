@@ -44,7 +44,7 @@ void init_isr()
 //set_gate((u32)isr_32, 0x08, 0x8E, &idt[32]);
 }
 
-void generic_c_handler(struct interrupt_register *int_reg)
+/*void generic_c_handler(struct interrupt_register *int_reg)
 {
     printf("An ISR was called\r\n");
     printf("EIP : %d\r\n", int_reg->eip);
@@ -52,13 +52,20 @@ void generic_c_handler(struct interrupt_register *int_reg)
     printf("Flags : %d\r\n", int_reg->flags);
     printf("ESP : %d\r\n", int_reg->esp);
     printf("SS : %d\r\n", int_reg->ss);
+}*/
+
+void generic_c_handler(void)
+{
+    printf("An ISR was called\r\n");
+
 }
 
 void test_isr()
 {
     printf("test");
-    asm volatile ("int $0"); // Breakpoint
-    asm volatile ("int $0x80"); // Syscall
+    printf("test1 %i", 1/0);
+    //asm volatile ("int $0"); // Breakpoint
+    //asm volatile ("int $0x80"); // Syscall
     printf("test2");
 
 }

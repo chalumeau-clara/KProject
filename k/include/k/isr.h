@@ -78,7 +78,7 @@ struct interrupt_register {
 typedef struct interrupt_register int_reg;
 
 void init_isr();
-void generic_c_handler(struct interrupt_register *int_reg);
+void generic_c_handler(void);
 void test_isr();
 
 #endif //K_ISR_H

@@ -52,7 +52,7 @@ int init_serial() {
     outb(COM1_BASE_ADDRESS + FIFO_CR_OFFSET, 0xC7);
 
     // IRQs enabled, RTS(Request to send)/DSR (Data terminal ready) set
-    outb(COM1_BASE_ADDRESS + MCR_OFFSET, 0x0B);
+    //outb(COM1_BASE_ADDRESS + MCR_OFFSET, 0x0B);
     return 0;
 }
 

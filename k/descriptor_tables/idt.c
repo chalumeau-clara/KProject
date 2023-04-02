@@ -8,7 +8,7 @@
 void set_gate(u32 offset, u16 segment_selector, u8 flags, idt_g *idtG)
 {
     // set offset 0 -- 15
-    idtG->offset_low = offset & 0xFFFF;
+    idtG->offset_low = offset ;
 
     // Set segment selector 15 -- 31
     idtG->segment_selector = segment_selector;
@@ -17,11 +17,11 @@ void set_gate(u32 offset, u16 segment_selector, u8 flags, idt_g *idtG)
     idtG->reserved_and_set_zero = 0;
 
     // Set flags 8 -- 15
-    idtG->flags = flags;
+    idtG->flags = flags | 0x60;
 
     // Set offset 16 -- 31
-    idtG->offset_high = (offset >> 16) & 0xFFFF0000;
-
+    idtG->offset_high = (offset >> 16) ;
+    //printf("IDT 0x%.16llX\n", idtG);
     return;
 }
 
@@ -33,7 +33,7 @@ void init_idt()
     idtR.limit = sizeof(idt) - 1; // idt size - 1
 
     // Initialize to zero all the idt fields
-    memset(&idt, 0, sizeof(idt_g) * 256);
+    memset(&idt, 0, sizeof(idt));
 
     // Init isr ?
     //init_isr();

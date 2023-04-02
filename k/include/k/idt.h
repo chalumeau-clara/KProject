@@ -15,7 +15,7 @@
 #include <string.h>
 #include "types.h"
 
-
+#define NB_IDT_DESCRIPTOR 256
 
 struct idt_gate
 {
@@ -37,7 +37,7 @@ struct idt_register
 } __attribute__((packed));
 typedef struct idt_register idt_r;
 
-#define NB_IDT_DESCRIPTOR 256
+
 static idt_g idt[NB_IDT_DESCRIPTOR];
 
 
