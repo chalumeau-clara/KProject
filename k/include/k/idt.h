@@ -27,7 +27,7 @@ struct idt_gate
     u8 flags; // 0D111 8 -- 12 with D = 1 : 32 bits 0 : 16 bits
     // DPL (Descriptor priviledge level) 13 -- 14 like gdt here set to 0
     // P segment present flag 14 -- 15 like gdt here 1
-    // 10001110 = 0x8E
+    // 10001110 = 0x8E | 11101110 = 0xEE (accessible by the user)
     u16 offset_high; // Offset to procedure entry point 16 -- 31
 } __attribute__((packed));
 typedef struct idt_gate idt_g;

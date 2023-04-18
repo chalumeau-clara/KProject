@@ -16,18 +16,19 @@ irq_\num:
 
 irq:
     #;<save registers>
-    pusha #AX, CX, DX, BX, SP, BP, SI, DI
-    push %ds
-    push %es
-    push %fs
-    push %gs
-    mov $0x10, %ax #; load the kernel data segment descriptor
-    mov %ax, %ds
-    mov %ax, %es
-    mov %ax, %fs
-    mov %ax, %gs
-
-    pushl %esp
+        pusha #AX, CX, DX, BX, SP, BP, SI, DI
+        push %ds
+        push %es
+        push %fs
+        push %gs
+        movw $0x10, %ax
+        movw %ax, %ds
+        movw %ax, %es
+        movw %ax, %fs
+        movw %ax, %gs
+        movw %ax, %ss
+        cld
+        pushl %esp
     call irq_handler
     add $4, %esp
     #;<restore registers>

@@ -48,7 +48,9 @@ void init_isr()
         // FLAGS: P:1 DPL:00 0 D:1 110
         set_gate(interrupt_handler[i], KERNEL_CODE_SEGMENT, 0x8E, i);
     }
-    set_gate((u32)isr_128, KERNEL_CODE_SEGMENT, 0x8E, ISR_SYSCALL);
+
+    // SYSCALL
+    set_gate((u32)isr_128, KERNEL_CODE_SEGMENT, 0xEE, ISR_SYSCALL);
 //set_gate((u32)isr_32, 0x08, 0x8E, 32);
 
 }
@@ -70,11 +72,11 @@ void test_isr()
 {
     //printf("test3\n\t");
     //isr_0();
-    printf("test\r\n");
+    printf("Test interrupt\r\n");
     // printf("test1 %i", 1/0);
     asm volatile ("int3"); // Breakpoint
     //asm volatile ("int $0x80"); // Syscall
-    printf("test2\r\n");
+    printf("Fin test interrupt\r\n");
 
 }
 
