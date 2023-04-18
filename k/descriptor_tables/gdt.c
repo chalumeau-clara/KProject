@@ -4,8 +4,10 @@
 
 #include "../include/k/gdt.h"
 #include <stdio.h>
-#define GDT_SIZE 5
+#define GDT_SIZE 6
 static gdt_e gdt[GDT_SIZE];
+
+
 
 void gdt_pretty_print()
 {
@@ -20,7 +22,6 @@ void gdt_pretty_print()
         printf("%x\r\n", gdt[i].base_address_high);
         printf("\r\n");
     }
-    return;
 }
 
 void set_segment_descriptor(u16 base, u32 limit, u8 type, u8 flag, gdt_e *gdtE) {
@@ -47,9 +48,7 @@ void set_segment_descriptor(u16 base, u32 limit, u8 type, u8 flag, gdt_e *gdtE) 
 
 void init_gdt()
 {
-    gdt_r gdtR;
-    gdtR.base_address = (u32)&gdt;
-    gdtR.limit = sizeof (gdt) - 1;
+
 
     // Null segment
     // Offset 0
@@ -81,8 +80,14 @@ void init_gdt()
 
     // Task State Segment
     // TODO
+    set_segment_descriptor(0, 0, 0, 0, &gdt[5]);
 
-    //gdt_pretty_print();
+
+
+    static gdt_r gdtR;
+    gdtR.base_address = (u32)gdt;
+    gdtR.limit = sizeof (gdt) - 1;
+    gdt_pretty_print();
 
     // Load GDT
     asm volatile("lgdt %0\n"
@@ -106,6 +111,5 @@ void init_gdt()
     // Switching to protected mode
     asm volatile("ljmp $0x08, $1f");
     asm volatile("1:");
-    return;
 
 }

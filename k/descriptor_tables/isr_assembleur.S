@@ -1,35 +1,54 @@
 
-.section .text
+;.section .text
 
-.align 16
+.altmacro
 
 .macro ISR_HAS_NOT_ERR_CODE num
+.align 16
 .global isr_\num
-        isr_\num:
-pushl $0 # Remplacer le code d'erreur
-pushl $\num # Numéro d'interruption
-jmp isr
+
+isr_\num:
+    pushl $0x80 # Remplacer le code d'erreur
+    pushl $\num # Numéro d'interruption
+    jmp isr
 .endm
 
 .macro ISR_HAS_ERR_CODE num
+.align 16
 .global isr_\num
-        isr_\num:
-pushl $\num
+
+isr_\num:
+    cli
+        pushl $\num
         jmp isr
 .endm
 
-        isr:
-#<save registers>
-pushal
-        pushl %esp
-        call generic_c_handler
-        addl $4, %esp
-#<restore registers>
-addl $8, %esp
-        popal
-iret  # interrupt return
-# pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
-# restores the saved flags into the EFLAGS register
+isr:
+    #;<save registers>
+    pusha #AX, CX, DX, BX, SP, BP, SI, DI
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    movw $0x10, %ax
+    movw %ax, %ds
+    movw %ax, %es
+    movw %ax, %fs
+    movw %ax, %gs
+    movw %ax, %ss
+    cld
+    pushl %esp
+    call generic_c_handler
+    add $4, %esp
+    #;<restore registers>
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popa
+
+    add $8, %esp
+    iret
 
 ISR_HAS_NOT_ERR_CODE 0
 ISR_HAS_NOT_ERR_CODE 1
@@ -63,4 +82,4 @@ ISR_HAS_NOT_ERR_CODE 28
 ISR_HAS_NOT_ERR_CODE 29
 ISR_HAS_NOT_ERR_CODE 30
 ISR_HAS_NOT_ERR_CODE 31
-ISR_HAS_NOT_ERR_CODE 127
+ISR_HAS_NOT_ERR_CODE 128

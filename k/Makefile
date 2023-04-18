@@ -28,8 +28,10 @@ OBJS	= \
 	  crt0.o \
       descriptor_tables/gdt.o \
       descriptor_tables/idt.o \
-      descriptor_tables/isr.o \
       descriptor_tables/isr_assembleur.o \
+      descriptor_tables/isr.o \
+      descriptor_tables/irq.o \
+      descriptor_tables/irq_assembleur.o \
       serial.o \
 	  k.o \
 	  libvga.o \

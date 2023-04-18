@@ -8,6 +8,8 @@
 #ifndef K_ISR_H
 #define K_ISR_H
 #include "idt.h"
+#define ISR_SYSCALL 0x80
+#define ISR_BASE_NUMBER 31
 
 // 0 Divide by 0
 //1 Debug
@@ -67,18 +69,19 @@ extern void isr_29();
 extern void isr_30();
 extern void isr_31();
 //extern void isr_32();
+extern void isr_128();
+
 
 struct interrupt_register {
-    u8 eip;
-    u8 cs;
-    u8 flags;
-    u8 esp;
-    u8 ss;
+    u32 gs, fs, es, ds; // save registers
+    u32 di, si, bp, sp, bx, dx, cx, ax; // pusha
+    u32 interrupt_number, error_code;
+    u32 eip, cs, eflags, esp, ss;
 }__attribute__((packed));
 typedef struct interrupt_register int_reg;
 
 void init_isr();
-void generic_c_handler(void);
+void generic_c_handler(volatile struct interrupt_register *int_reg);
 void test_isr();
 
 #endif //K_ISR_H

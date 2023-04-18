@@ -16,16 +16,18 @@
 #include "types.h"
 
 #define NB_IDT_DESCRIPTOR 256
+#define KERNEL_CODE_SEGMENT 0x08
 
 struct idt_gate
 {
     u16 offset_low; // Offset to procedure entry point 0 -- 15
-    u16 segment_selector; // segment selector for destination code segment 16 -- 31
+    u16 segment_selector; // segment selector for destination code segment 16 -- 31 KERNEL_CODE_SEGMENT_OFFSET = 0x08
 
     u8 reserved_and_set_zero; // reserved 0 -- 4 and zero 5 -- 7
-    u8 flags; // 0D111 8 -- 12 D = 1 : 32 bits 0 : 16 bits
-    // DPL (Descriptor priviledge level) 13 -- 14 like gdt
-    // P segment present flag 14 -- 15 like gdt
+    u8 flags; // 0D111 8 -- 12 with D = 1 : 32 bits 0 : 16 bits
+    // DPL (Descriptor priviledge level) 13 -- 14 like gdt here set to 0
+    // P segment present flag 14 -- 15 like gdt here 1
+    // 10001110 = 0x8E
     u16 offset_high; // Offset to procedure entry point 16 -- 31
 } __attribute__((packed));
 typedef struct idt_gate idt_g;
@@ -38,10 +40,7 @@ struct idt_register
 typedef struct idt_register idt_r;
 
 
-static idt_g idt[NB_IDT_DESCRIPTOR];
-
-
 void init_idt();
-void set_gate(u32 offset, u16 segment_selector, u8 flags, idt_g *idtG);
+void set_gate(u32 offset, u16 segment_selector, u8 flags, u8 nb );
 
 #endif //K_IDT_H

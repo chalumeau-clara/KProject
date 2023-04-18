@@ -5,10 +5,28 @@
 #include "../include/k/idt.h"
 #include "../include/k/isr.h"
 
-void set_gate(u32 offset, u16 segment_selector, u8 flags, idt_g *idtG)
+static idt_g idt[NB_IDT_DESCRIPTOR];
+
+void pretty_print_set_gate()
 {
+    for (int i = 0; i < NB_IDT_DESCRIPTOR; i++)
+    {
+        idt_g *idtG = &idt[i];
+        printf("IDT \n\t:");
+        printf("offset low %x\n\t", idtG->offset_low);
+        printf("segment_selector %x\n\t", idtG->segment_selector);
+        printf("flags %x\n\t", idtG->flags);
+        printf("offset_high %x\n\t", idtG->offset_high);
+    }
+
+}
+
+void set_gate(u32 offset, u16 segment_selector, u8 flags, u8 nb)
+{
+    idt_g *idtG = &idt[nb];
+
     // set offset 0 -- 15
-    idtG->offset_low = offset ;
+    idtG->offset_low = (u16)(offset & 0x0000FFFF);
 
     // Set segment selector 15 -- 31
     idtG->segment_selector = segment_selector;
@@ -17,30 +35,39 @@ void set_gate(u32 offset, u16 segment_selector, u8 flags, idt_g *idtG)
     idtG->reserved_and_set_zero = 0;
 
     // Set flags 8 -- 15
-    idtG->flags = flags | 0x60;
+    idtG->flags = flags;
 
     // Set offset 16 -- 31
-    idtG->offset_high = (offset >> 16) ;
-    //printf("IDT 0x%.16llX\n", idtG);
-    return;
+    idtG->offset_high = (u16)((offset & 0xFFFF0000) >> 16);
+
+    //pretty_print_set_gate(idtG);
 }
 
 void init_idt()
 {
-    idt_r idtR;
+    static idt_r idtR;
 
-    idtR.base_address = (u32)&idt; // idt base address
+    idtR.base_address = (u32)idt; // idt base address
     idtR.limit = sizeof(idt) - 1; // idt size - 1
 
-    // Initialize to zero all the idt fields
-    memset(&idt, 0, sizeof(idt));
+    printf("itdR %x\n", &idtR);
+    printf("itdR base add %x\n", idtR.base_address);
+    printf("itdR limit %x\r\n", idtR.limit);
+
 
     // Init isr ?
-    //init_isr();
+    init_isr();
+    printf("ISR init\r\n");
+    pretty_print_set_gate();
+
     // Load IDT
     __asm__ volatile("lidt %0\n"
             : /* no output */
             : "m" (idtR)
             : "memory");
+
+    //while (1);
+
+
 }
 
