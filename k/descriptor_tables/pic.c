@@ -2,8 +2,8 @@
 // Created by chalu on 4/10/2023.
 //
 
-#include "../include/k/irq.h"
-#include "../io.h" // for inb and outb
+#include "../include/k/pic.h"
+
 
 u32 pic_handler[] = {
         (u32) irq_0,
@@ -24,7 +24,7 @@ u32 pic_handler[] = {
         (u32) irq_15,
 };
 
-void init_pic(void){
+void init_pic(){
     // ICW1 (Initialization Command Words)
     // Controlling the PIC’s mode of operation
     // 10001 ICW4 present, cascade mode, edge triggered mode
@@ -56,6 +56,8 @@ void init_pic(void){
         // set idt
         set_gate(pic_handler[i], KERNEL_CODE_SEGMENT, 0x8E, i + 32);
     }
+    // Enable keyboad
+    OCW1(IRQ_KEYBOARD, 1);
 
     // enable hardware
     asm volatile("sti");
@@ -85,8 +87,4 @@ void OCW2(void) {
     // It allows the kernel, among other things, to acknowledge an IRQ
     outb(MASTER_PIC_A, 0x20); // Send ACK to master PIC
     outb(SLAVE_PIC_A, 0x20); // Send ACK to slave PIC
-}
-
-void irq_handler(void) {
-    printf("An IRQ was called\n");
 }

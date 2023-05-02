@@ -28,8 +28,7 @@
 #include "k/serial.h"
 #include "k/gdt.h"
 #include "k/idt.h"
-#include "k/irq.h"
-#include "k/isr.h"
+#include "k/pic.h"
 
 void k_main(unsigned long magic, multiboot_info_t *info)
 {
@@ -51,12 +50,10 @@ void k_main(unsigned long magic, multiboot_info_t *info)
    /* init_isr();
     printf("ISR init\r\n");*/
 
-//    init_pic();a
-//    printf("PIC Init\r\n");
+    init_pic();
+    printf("PIC Init\r\n");
 
-    test_isr();
-    printf("Test isr\r\n");
-    //printf("%i", 8/0);
+    //test_isr();
 
     for (unsigned i = 0; ; ) {
 		*fb = star[i++ % 4];

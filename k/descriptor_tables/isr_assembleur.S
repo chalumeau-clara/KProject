@@ -18,9 +18,18 @@ isr_\num:
 .global isr_\num
 
 isr_\num:
-    cli
         pushl $\num
         jmp isr
+.endm
+
+.macro IRQ_HAS_NOT_ERR_CODE num
+.align 16
+.global isr_\num
+
+irq_\num:
+    pushl $0x80 # Remplacer le code d'erreur
+    pushl $\num # Numéro d'interruption
+    jmp isr
 .endm
 
 isr:
@@ -36,7 +45,7 @@ isr:
     movw %ax, %fs
     movw %ax, %gs
     movw %ax, %ss
-    cld
+
     pushl %esp
     call generic_c_handler
     add $4, %esp
@@ -82,4 +91,24 @@ ISR_HAS_NOT_ERR_CODE 28
 ISR_HAS_NOT_ERR_CODE 29
 ISR_HAS_NOT_ERR_CODE 30
 ISR_HAS_NOT_ERR_CODE 31
-ISR_HAS_NOT_ERR_CODE 128
+
+# pic
+IRQ_HAS_NOT_ERR_CODE 32
+IRQ_HAS_NOT_ERR_CODE 33
+IRQ_HAS_NOT_ERR_CODE 34
+IRQ_HAS_NOT_ERR_CODE 35
+IRQ_HAS_NOT_ERR_CODE 36
+IRQ_HAS_NOT_ERR_CODE 37
+IRQ_HAS_NOT_ERR_CODE 38
+IRQ_HAS_NOT_ERR_CODE 39
+IRQ_HAS_NOT_ERR_CODE 40
+IRQ_HAS_NOT_ERR_CODE 41
+IRQ_HAS_NOT_ERR_CODE 42
+IRQ_HAS_NOT_ERR_CODE 43
+IRQ_HAS_NOT_ERR_CODE 44
+IRQ_HAS_NOT_ERR_CODE 45
+IRQ_HAS_NOT_ERR_CODE 46
+IRQ_HAS_NOT_ERR_CODE 47
+
+# Syscall
+IRQ_HAS_NOT_ERR_CODE 128

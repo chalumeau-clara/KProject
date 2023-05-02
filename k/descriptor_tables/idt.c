@@ -50,15 +50,15 @@ void init_idt()
     idtR.base_address = (u32)idt; // idt base address
     idtR.limit = sizeof(idt) - 1; // idt size - 1
 
-    printf("itdR %x\n", &idtR);
-    printf("itdR base add %x\n", idtR.base_address);
-    printf("itdR limit %x\r\n", idtR.limit);
+//    printf("itdR %x\n", &idtR);
+//    printf("itdR base add %x\n", idtR.base_address);
+//    printf("itdR limit %x\r\n", idtR.limit);
 
 
     // Init isr ?
     init_isr();
     printf("ISR init\r\n");
-    pretty_print_set_gate();
+//    pretty_print_set_gate();
 
     // Load IDT
     __asm__ volatile("lidt %0\n"

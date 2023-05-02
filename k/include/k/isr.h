@@ -8,6 +8,7 @@
 #ifndef K_ISR_H
 #define K_ISR_H
 #include "idt.h"
+#include "keyboard.h"
 #define ISR_SYSCALL 0x80
 #define ISR_BASE_NUMBER 31
 
@@ -70,6 +71,7 @@ extern void isr_30();
 extern void isr_31();
 //extern void isr_32();
 extern void isr_128();
+
 
 
 struct interrupt_register {

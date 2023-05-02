@@ -3,7 +3,7 @@
 //
 
 // ***************************
-// Interrupt Request
+// Programmable Interrupt Controller
 // ***************************
 
 // Master 8259
@@ -27,14 +27,17 @@
 //IRQ14 – hard disk controller 1
 //IRQ15 – hard disk controller 2
 
-#ifndef K_IRQ_H
-#define K_IRQ_H
+#ifndef K_PIC_H
+#define K_PIC_H
 #include "idt.h"
+#include "../io.h" // for inb and outb
+
 #define MASTER_PIC_A 0x20
 #define MASTER_PIC_B 0x21
 #define SLAVE_PIC_A		0xA0
 #define SLAVE_PIC_B		0xA1
 #define IRQ_NUMBER 16
+#define IRQ_KEYBOARD 1
 
 extern void irq_0();
 extern void irq_1();
@@ -56,6 +59,5 @@ extern void irq_15();
 void init_pic(void);
 void OCW1(u8 irq, size_t mask);
 void OCW2(void);
-void irq_handler(void);
 
-#endif //K_IRQ_H
+#endif //K_PIC_H

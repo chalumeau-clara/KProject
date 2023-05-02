@@ -3,6 +3,7 @@
 //
 
 #include "../include/k/isr.h"
+#include "../include/k/keyboard.h"
 
 u32 interrupt_handler[] = {
         (u32) isr_0,
@@ -65,6 +66,14 @@ void generic_c_handler(volatile struct interrupt_register *int_reg)
     printf("Flags : %x\r\n", int_reg->eflags);
     printf("ESP : %x\r\n", int_reg->esp);
     printf("SS : %x\r\n", int_reg->ss);
+
+    // disable hardware
+    asm volatile("cli");
+    if (int_reg->interrupt_number == 33)
+        handler_keyboard();
+
+    // enable hardware
+    asm volatile("sti");
 }
 
 
