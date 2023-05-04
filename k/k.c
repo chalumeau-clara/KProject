@@ -29,6 +29,7 @@
 #include "k/gdt.h"
 #include "k/idt.h"
 #include "k/pic.h"
+#include "k/isr.h"
 
 void k_main(unsigned long magic, multiboot_info_t *info)
 {
@@ -47,11 +48,9 @@ void k_main(unsigned long magic, multiboot_info_t *info)
     init_idt();
     printf("IDT Init\r\n");
 
-   /* init_isr();
-    printf("ISR init\r\n");*/
+//     test_isr();
 
-    init_pic();
-    printf("PIC Init\r\n");
+
 
     //test_isr();
 

@@ -87,7 +87,7 @@ void init_gdt()
     static gdt_r gdtR;
     gdtR.base_address = (u32)gdt;
     gdtR.limit = sizeof (gdt) - 1;
-    gdt_pretty_print();
+    // gdt_pretty_print();
 
     // Load GDT
     asm volatile("lgdt %0\n"

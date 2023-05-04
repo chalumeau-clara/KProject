@@ -13,5 +13,6 @@
 #define KEYBOARD_STATUS_REGISTER 0x64
 
 void handler_keyboard();
+void get_key(u8 scan_code);
 
 #endif //K_KEYBOARD_H

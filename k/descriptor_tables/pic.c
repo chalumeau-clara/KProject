@@ -21,8 +21,9 @@ u32 pic_handler[] = {
         (u32) irq_12,
         (u32) irq_13,
         (u32) irq_14,
-        (u32) irq_15,
+        (u32) irq_15
 };
+
 
 void init_pic(){
     // ICW1 (Initialization Command Words)
@@ -34,8 +35,8 @@ void init_pic(){
     // ICW2
     // informs the PIC about the base offset in the interrupt descriptor table (IDT) to use when transmitting an IRQ
     // from a device to the CPU.
-    outb(MASTER_PIC_B, 0x40); // Set the master PIC's base offset to 64
-    outb(SLAVE_PIC_B, 0x50); // Set the slave PIC's base offset to 80
+    outb(MASTER_PIC_B, 0x20); // Set the master PIC's base offset to 32 | IDT entry number 32
+    outb(SLAVE_PIC_B, 0x28); // Set the slave PIC's base offset to 40 | IDT entry number 40
 
     // ICW3
     // how master and slave PICs are connected
@@ -55,7 +56,10 @@ void init_pic(){
         OCW1(i, 0);
         // set idt
         set_gate(pic_handler[i], KERNEL_CODE_SEGMENT, 0x8E, i + 32);
+        // printf ( "handler %u %x", i, pic_handler[i]);
+
     }
+
     // Enable keyboad
     OCW1(IRQ_KEYBOARD, 1);
 
@@ -77,14 +81,15 @@ void OCW1(u8 irq, size_t mask) {
         port = MASTER_PIC_B;
     }
 
-    value = mask == 0 ? inb(port) | (1 << irq) : inb(port) | ~(1 << irq);
+    value = mask == 0 ? inb(port) | (1 << irq) : inb(port) & ~(1 << irq);
     outb(port, value);
 
 }
 
-void OCW2(void) {
+void OCW2(u8 irq) {
     // OCW2
     // It allows the kernel, among other things, to acknowledge an IRQ
-    outb(MASTER_PIC_A, 0x20); // Send ACK to master PIC
-    outb(SLAVE_PIC_A, 0x20); // Send ACK to slave PIC
+    if (irq >= 8)
+        outb(SLAVE_PIC_A, PIC_EOI); // Send ACK to slave PIC
+    outb(MASTER_PIC_A, PIC_EOI); // Send ACK to master PIC
 }

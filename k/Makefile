@@ -29,9 +29,10 @@ OBJS	= \
       descriptor_tables/gdt.o \
       descriptor_tables/idt.o \
       descriptor_tables/isr_assembleur.o \
-      descriptor_tables/isr.o \
-      descriptor_tables/irq.o \
       descriptor_tables/irq_assembleur.o \
+      descriptor_tables/pic.o \
+      descriptor_tables/keyboard.o \
+      descriptor_tables/isr.o \
       serial.o \
 	  k.o \
 	  libvga.o \

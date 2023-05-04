@@ -12,6 +12,7 @@
 #define ISR_SYSCALL 0x80
 #define ISR_BASE_NUMBER 31
 
+
 // 0 Divide by 0
 //1 Debug
 //2 NMI
@@ -71,6 +72,7 @@ extern void isr_30();
 extern void isr_31();
 //extern void isr_32();
 extern void isr_128();
+
 
 
 

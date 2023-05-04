@@ -3,6 +3,7 @@
 //
 
 #include "../include/k/isr.h"
+#include "../include/k/pic.h"
 #include "../include/k/keyboard.h"
 
 u32 interrupt_handler[] = {
@@ -42,9 +43,10 @@ u32 interrupt_handler[] = {
 };
 
 
+
 void init_isr()
 {
-    for (size_t i = 0; i < ISR_BASE_NUMBER; i++) {
+    for (size_t i = 0; i <= ISR_BASE_NUMBER; i++) {
         // SEGMENT SELECTOR: A Segment Selector with multiple fields which must point to a valid code segment in your GDT.
         // FLAGS: P:1 DPL:00 0 D:1 110
         set_gate(interrupt_handler[i], KERNEL_CODE_SEGMENT, 0x8E, i);
@@ -56,21 +58,25 @@ void init_isr()
 
 }
 
+
+
 void generic_c_handler(volatile struct interrupt_register *int_reg)
 {
-    printf("An ISR was called\r\n");
-    printf("interrupt_number : %x\r\n", int_reg->interrupt_number);
-    printf("error_code : %x\r\n", int_reg->error_code);
-    printf("EIP : %x\r\n", int_reg->eip);
-    printf("CS : %x\r\n", int_reg->cs);
-    printf("Flags : %x\r\n", int_reg->eflags);
-    printf("ESP : %x\r\n", int_reg->esp);
-    printf("SS : %x\r\n", int_reg->ss);
+    printf("An ISR was called\n");
+    printf("interrupt_number : %u\n", int_reg->interrupt_number);
+    printf("error_code : %x\n", int_reg->error_code);
+    printf("EIP : %x\n", int_reg->eip);
+    printf("CS : %x\n", int_reg->cs);
+    printf("Flags : %x\n", int_reg->eflags);
+    printf("ESP : %x\n", int_reg->esp);
+    printf("SS : %x\n", int_reg->ss);
 
     // disable hardware
     asm volatile("cli");
-    if (int_reg->interrupt_number == 33)
+    if (int_reg->interrupt_number == 33){
         handler_keyboard();
+        OCW2(IRQ_KEYBOARD);
+    }
 
     // enable hardware
     asm volatile("sti");
@@ -83,8 +89,8 @@ void test_isr()
     //isr_0();
     printf("Test interrupt\r\n");
     // printf("test1 %i", 1/0);
-    asm volatile ("int3"); // Breakpoint
-    //asm volatile ("int $0x80"); // Syscall
+    //asm volatile ("int3"); // Breakpoint
+    //asm volatile ("int $32");
     printf("Fin test interrupt\r\n");
 
 }

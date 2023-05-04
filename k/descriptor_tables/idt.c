@@ -4,6 +4,8 @@
 
 #include "../include/k/idt.h"
 #include "../include/k/isr.h"
+#include "../include/k/pic.h"
+
 
 static idt_g idt[NB_IDT_DESCRIPTOR];
 
@@ -12,7 +14,7 @@ void pretty_print_set_gate()
     for (int i = 0; i < NB_IDT_DESCRIPTOR; i++)
     {
         idt_g *idtG = &idt[i];
-        printf("IDT \n\t:");
+        printf("IDT nb : %u \n\t:", i);
         printf("offset low %x\n\t", idtG->offset_low);
         printf("segment_selector %x\n\t", idtG->segment_selector);
         printf("flags %x\n\t", idtG->flags);
@@ -58,7 +60,10 @@ void init_idt()
     // Init isr ?
     init_isr();
     printf("ISR init\r\n");
-//    pretty_print_set_gate();
+
+    init_pic();
+    printf("PIC Init\r\n");
+//     pretty_print_set_gate();
 
     // Load IDT
     __asm__ volatile("lidt %0\n"
