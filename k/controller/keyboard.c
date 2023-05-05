@@ -3,6 +3,11 @@
 //
 
 #include "../include/k/keyboard.h"
+
+static queue_keyboard queueKeyboard = {
+    .fifo = NULL,
+};
+
 char normal_scan_code_table[128] = {
         0, // 0x00
         0, // 0x01
@@ -264,6 +269,11 @@ char shift_scan_code_table[128] = {
         0, // 0x7f
 };
 
+void init_queue(void) {
+    queueKeyboard.fifo = fifo_init();
+};
+
+
 void handler_keyboard() {
 
     // If Output buffer full is set by the keyboard controller
@@ -274,12 +284,14 @@ void handler_keyboard() {
         // Key press
         if ((scan_code & 0x80) == 0) {
             printf("scan code %u\n", scan_code);
-            enqueu(scan_code);
-            get_key(scan_code);
+            printf("letter %c\n", normal_scan_code_table[scan_code]);
+            fifo_push(queueKeyboard.fifo, scan_code);
         }
     }
 };
 
-void get_key(u8 scan_code) {
-    printf("letter %c\n", normal_scan_code_table[scan_code]);
+int getkey(void) {
+    if (fifo_size(queueKeyboard.fifo) != 0)
+        return fifo_pop(queueKeyboard.fifo);
+    return -1;
 }

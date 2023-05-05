@@ -59,9 +59,14 @@ void init_pic(){
         // printf ( "handler %u %x", i, pic_handler[i]);
 
     }
+    // Enable Timer
+    OCW1(IRQ_TIMER, 1);
+    printf("Timer Init");
 
     // Enable keyboad
     OCW1(IRQ_KEYBOARD, 1);
+    init_queue();
+    printf("Keyboard Init");
 
     // enable hardware
     asm volatile("sti");

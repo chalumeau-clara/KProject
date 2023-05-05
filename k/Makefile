@@ -30,9 +30,11 @@ OBJS	= \
       descriptor_tables/idt.o \
       descriptor_tables/isr_assembleur.o \
       descriptor_tables/irq_assembleur.o \
-      descriptor_tables/pic.o \
-      descriptor_tables/keyboard.o \
+      controller/pic.o \
+      controller/keyboard.o \
+      controller/timer.o \
       descriptor_tables/isr.o \
+      helpers/fifo.o \
       serial.o \
 	  k.o \
 	  libvga.o \

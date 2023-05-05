@@ -31,12 +31,13 @@
 #define K_PIC_H
 #include "idt.h"
 #include "../io.h" // for inb and outb
+#include "keyboard.h"
+#include "timer.h"
 
 #define MASTER_PIC_A 0x20
 #define MASTER_PIC_B 0x21
 #define SLAVE_PIC_A		0xA0
 #define SLAVE_PIC_B		0xA1
-#define IRQ_KEYBOARD 1
 #define IRQ_NUMBER 16
 #define PIC_EOI 0x20 // PIC End Of Interrupt
 

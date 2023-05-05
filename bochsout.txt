@@ -1,5 +1,3 @@
 Serial Init
 GDT Init
-IDT Init
 ISR init
-test
