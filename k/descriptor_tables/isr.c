@@ -76,6 +76,9 @@ void generic_c_handler(volatile struct interrupt_register *int_reg)
     if (int_reg->interrupt_number == 33){
         handler_keyboard();
         OCW2(IRQ_KEYBOARD);
+    } else if (int_reg->interrupt_number == 32) {
+        handler_timer();
+        OCW2(IRQ_TIMER);
     }
 
     // enable hardware

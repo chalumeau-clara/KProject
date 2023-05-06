@@ -61,6 +61,7 @@ void init_pic(){
     }
     // Enable Timer
     OCW1(IRQ_TIMER, 1);
+    init_timer();
     printf("Timer Init");
 
     // Enable keyboad

@@ -55,6 +55,7 @@ void k_main(unsigned long magic, multiboot_info_t *info)
 
     //test_isr();
 
+
     for (unsigned i = 0; ; ) {
 		*fb = star[i++ % 4];
 	}
