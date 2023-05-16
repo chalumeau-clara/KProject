@@ -19,8 +19,25 @@
  *    contact : alexandre.becoulet@epita.fr
  */
 
+// Use path table (with sibling => look)
+// first search primary volume descriptor (volume numero 16)
+/*
+ * apres trouviée le fichier et garder le lba
+ */
+
+/*
+ * open : localiser fichier stocker info qu'on l'a trouvée enregistrer file descriptor
+ * seek : modifier offset fichier et s'il faut lit un nv block
+ * close : desenrgistrer le file descriptor
+ * read : lit fichier
+ */
+
 #ifndef ISO9660_H
 # define ISO9660_H
+#include "types.h"
+#include "kstd.h"
+#include "string.h"
+#include "atapi.h"
 
 # define __packed __attribute__((__packed__))
 
@@ -98,7 +115,7 @@ struct iso_dir {
 
 struct iso_prim_voldesc {
 	u8   vol_desc_type;   /* Volume Descriptor Type (1) */
-	char      std_identifier[5]; /* Standard Identifier (CD001) */
+	char      std_identifier[5]; /* Standard Identifier (CD001) */ // assert
 	u8   vol_desc_version;  /* Volume Descriptor Version (1) */
 	u8   unused1; /* Unused Field */
 	char      syidf[ISO_SYSIDF_LEN]; /* System Identifier */
@@ -134,5 +151,22 @@ struct iso_prim_voldesc {
 	char    date_effect[ISO_LDATE_LEN]; /* Effective date */
 	u8 filestrutc_version;  /* File Structure Version (1) */
 } __packed;
+
+#define MAX_FILE_DESCRIPTOR 1024
+typedef struct file_descriptor {
+    int fd; // 0 not used, 1 used
+    u32 offset;
+    u32 lba; // Logical Block Addressing
+    u32  file_size; /* File size */
+
+} file_descriptor[MAX_FILE_DESCRIPTOR];
+
+
+int open(const char *pathname, int flags);
+ssize_t read(int fd, void *buf, size_t count);
+off_t seek(int fd, off_t offset, int whence);
+int close(int fd);
+
+
 
 #endif /* !ISO9660_H */

@@ -59,10 +59,10 @@ void init_idt()
 
     // Init isr ?
     init_isr();
-    printf("ISR init\r\n");
+    printf("ISR init\n");
 
     init_pic();
-    printf("PIC Init\r\n");
+    printf("PIC Init\n");
 //     pretty_print_set_gate();
 
     // Load IDT

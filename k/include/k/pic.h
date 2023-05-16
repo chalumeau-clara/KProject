@@ -33,6 +33,7 @@
 #include "../io.h" // for inb and outb
 #include "keyboard.h"
 #include "timer.h"
+#include "atapi.h"
 
 #define MASTER_PIC_A 0x20
 #define MASTER_PIC_B 0x21

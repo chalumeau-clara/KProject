@@ -62,12 +62,16 @@ void init_pic(){
     // Enable Timer
     OCW1(IRQ_TIMER, 1);
     init_timer();
-    printf("Timer Init");
+    printf("Timer Init\n");
 
     // Enable keyboad
     OCW1(IRQ_KEYBOARD, 1);
     init_queue();
-    printf("Keyboard Init");
+    printf("Keyboard Init\n");
+
+    // Enable ATA
+    OCW1(IRQ_CONTROLLER_1, 1);
+    OCW1(IRQ_CONTROLLER_2, 1);
 
     // enable hardware
     asm volatile("sti");

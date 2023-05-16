@@ -1,8 +1,15 @@
 #ifndef ATAPI_H_
 #define ATAPI_H_
 
-# include <k/compiler.h>
-# include <k/types.h>
+# include "compiler.h"
+#include "types.h"
+#include "../../io.h"
+#include "string.h"
+#include "ulist.h"
+
+/* IRQ Number */
+# define IRQ_CONTROLLER_1 14
+# define IRQ_CONTROLLER_2 15
 
 /* Device Control Registers */
 # define PRIMARY_DCR 0x3F6
@@ -41,7 +48,7 @@
 # define DRQ (1 << 3)
 # define SRV (1 << 4)
 # define DF (1 << 5)
-# define RDY (1 << 6)
+# define DRDY (1 << 6)
 # define BSY (1 << 7)
 
 # define ABRT (1 << 2)
@@ -83,5 +90,32 @@ struct SCSI_packet {
 	u8 flags_hi;
 	u8 control;
 } __packed;
+
+/*
+ * ‘waiting’ helper functions
+ */
+void busy_wait(u16 drive);
+void wait_device_selection(u16 drive);
+void wait_packet_request(u16 drive);
+
+/*
+ * functions to discover the ATAPI device
+ */
+
+void select_drive(u16 bus, u8 slave);
+int is_atapi_drive(u16 bus);
+void discover_atapi_drive();
+
+/*
+ *  functions to read data on the drive
+ */
+
+int send_packet(struct SCSI_packet *pkt, u16 drive,
+                u16 size);
+void *read_block(size_t lba);
+
+typedef struct list_atapi_drive {
+    ulist *ulist;
+} list_atapi_drive;
 
 #endif /* !ATAPI_H_ */

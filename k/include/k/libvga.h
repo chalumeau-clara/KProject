@@ -25,6 +25,8 @@
 #define LIBVGA_H
 
 #include <stddef.h>
+#include "string.h"
+#include "kstd.h"
 
 #define VGA_AC_INDEX		0x3C0
 #define VGA_AC_WRITE		0x3C0
@@ -56,5 +58,9 @@ char *libvga_get_framebuffer(void);
 void libvga_switch_mode13h(void);
 
 void libvga_switch_mode3h(void);
+
+int setvideo(int mode);
+
+void swap_frontbuffer(const void *buffer);
 
 #endif				/* !LIBVGA_H */

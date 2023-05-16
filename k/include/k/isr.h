@@ -9,7 +9,10 @@
 #define K_ISR_H
 #include "idt.h"
 #include "keyboard.h"
+#include "syscall.h"
 #define ISR_SYSCALL 0x80
+#define ISR_KEYBOARD 33
+#define ISR_TIMER 32
 #define ISR_BASE_NUMBER 31
 
 

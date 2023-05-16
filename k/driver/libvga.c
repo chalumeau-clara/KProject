@@ -21,10 +21,10 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <k/compiler.h>
+#include "k/compiler.h"
 
-#include "libvga.h"
-#include "io.h"
+#include "k/libvga.h"
+#include "../io.h"
 
 /*
 ** Use to save the VGA plane 2, which contains the text font,
@@ -248,4 +248,32 @@ void libvga_switch_mode3h(void)
 		vram[i] = libvga_txt_mode_font[i];
 
 	libvga_write_regs(libvga_regs_80x25xtext);
+}
+
+int setvideo(int mode) {
+    switch (mode) {
+        case VIDEO_GRAPHIC :
+            libvga_switch_mode13h();
+            return 0;
+        case VIDEO_TEXT :
+            libvga_switch_mode3h();
+            return 0;
+    }
+    return -1;
+}
+
+void swap_frontbuffer(const void *buffer) {
+    setvideo(VIDEO_GRAPHIC);
+    char *buf = buffer;
+    // use memcpy
+    // Load framebuffer
+    char *fb = (void *)0xb8000;
+    memcpy(fb, buf, array_size(buf));
+    /*for (unsigned i = 0, j = 0 ; i < 25 && j < 80; i++,j++) {
+        // Set character
+        fb[(i * 80 + j) * 2] = buf[(i * 80 + j) * 2];
+        // Set colors
+        fb[(i * 80 + j) * 2 + 1] = buf[(i * 80 + j) * 2 + 1];
+    }*/
+
 }

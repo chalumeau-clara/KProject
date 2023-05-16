@@ -30,14 +30,18 @@ OBJS	= \
       descriptor_tables/idt.o \
       descriptor_tables/isr_assembleur.o \
       descriptor_tables/irq_assembleur.o \
+      descriptor_tables/syscall.o \
       controller/pic.o \
       controller/keyboard.o \
       controller/timer.o \
+      file_system/iso_9660.o \
       descriptor_tables/isr.o \
       helpers/fifo.o \
+      helpers/ulist.o \
       serial.o \
 	  k.o \
-	  libvga.o \
+	  driver/libvga.o \
+	  driver/atapi.o \
 	  list.o \
 	  memory.o \
 

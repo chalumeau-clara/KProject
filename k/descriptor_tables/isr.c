@@ -73,10 +73,13 @@ void generic_c_handler(volatile struct interrupt_register *int_reg)
 
     // disable hardware
     asm volatile("cli");
-    if (int_reg->interrupt_number == 33){
+    if (int_reg->interrupt_number == ISR_SYSCALL) {
+        handler_syscall(int_reg);
+    }
+    else if (int_reg->interrupt_number == ISR_KEYBOARD){
         handler_keyboard();
         OCW2(IRQ_KEYBOARD);
-    } else if (int_reg->interrupt_number == 32) {
+    } else if (int_reg->interrupt_number == ISR_TIMER) {
         handler_timer();
         OCW2(IRQ_TIMER);
     }

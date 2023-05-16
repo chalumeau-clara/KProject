@@ -50,8 +50,10 @@ void k_main(unsigned long magic, multiboot_info_t *info)
     printf("IDT Init\r\n");
 
 //     test_isr();
+    u32 res;
 
-
+    asm volatile ("int $0x80" : "=a"(res) : "a"(3), "b"(45));
+    printf("res syscall %u", res);
 
     //test_isr();
 
