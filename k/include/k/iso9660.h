@@ -155,13 +155,13 @@ struct iso_prim_voldesc {
 #define MAX_FILE_DESCRIPTOR 1024
 typedef struct file_descriptor {
     int fd; // 0 not used, 1 used
-    u32 offset;
+    off_t offset;
     u32 lba; // Logical Block Addressing
     u32  file_size; /* File size */
 
 } file_descriptor[MAX_FILE_DESCRIPTOR];
 
-
+u8 init_iso_9660();
 int open(const char *pathname, int flags);
 ssize_t read(int fd, void *buf, size_t count);
 off_t seek(int fd, off_t offset, int whence);

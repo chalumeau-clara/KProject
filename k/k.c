@@ -30,6 +30,7 @@
 #include "k/idt.h"
 #include "k/pic.h"
 #include "k/isr.h"
+#include "k/iso9660.h"
 
 void k_main(unsigned long magic, multiboot_info_t *info)
 {
@@ -44,18 +45,25 @@ void k_main(unsigned long magic, multiboot_info_t *info)
     printf("Serial Init\r\n");
 
     init_gdt();
-    printf("GDT Init\r\n"); // Verify it works
+    printf("GDT Init\r\n");
 
     init_idt();
     printf("IDT Init\r\n");
+
+    init_ATAPI_driver();
+    printf("Init ATAPI drive\n");
+
+    init_iso_9660();
+    printf("Init File system\n");
+
+    //read_block(58);
 
 //     test_isr();
     u32 res;
 
     asm volatile ("int $0x80" : "=a"(res) : "a"(3), "b"(45));
-    printf("res syscall %u", res);
+    printf("res syscall %u\n", res);
 
-    //test_isr();
 
 
     for (unsigned i = 0; ; ) {

@@ -62,14 +62,17 @@ void init_isr()
 
 void generic_c_handler(volatile struct interrupt_register *int_reg)
 {
-    printf("An ISR was called\n");
-    printf("interrupt_number : %u\n", int_reg->interrupt_number);
-    printf("error_code : %x\n", int_reg->error_code);
-    printf("EIP : %x\n", int_reg->eip);
-    printf("CS : %x\n", int_reg->cs);
-    printf("Flags : %x\n", int_reg->eflags);
-    printf("ESP : %x\n", int_reg->esp);
-    printf("SS : %x\n", int_reg->ss);
+    // Trop de log
+    if (int_reg->interrupt_number != ISR_TIMER) {
+        printf("An ISR was called\n");
+        printf("interrupt_number : %u\n", int_reg->interrupt_number);
+        printf("error_code : %x\n", int_reg->error_code);
+        printf("EIP : %x\n", int_reg->eip);
+        printf("CS : %x\n", int_reg->cs);
+        printf("Flags : %x\n", int_reg->eflags);
+        printf("ESP : %x\n", int_reg->esp);
+        printf("SS : %x\n", int_reg->ss);
+    }
 
     // disable hardware
     asm volatile("cli");

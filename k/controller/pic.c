@@ -69,10 +69,6 @@ void init_pic(){
     init_queue();
     printf("Keyboard Init\n");
 
-    // Enable ATA
-    OCW1(IRQ_CONTROLLER_1, 1);
-    OCW1(IRQ_CONTROLLER_2, 1);
-
     // enable hardware
     asm volatile("sti");
 }

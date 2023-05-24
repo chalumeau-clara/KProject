@@ -73,7 +73,7 @@
 # define PACKET_SZ 12
 
 # define PACKET_AWAIT_COMMAND 1
-# define PACKET_DATA_TRANSMIT 2
+# define PACKET_DATA_TRANSMIT 0x2
 # define PACKET_COMMAND_COMPLETE 3
 
 struct SCSI_packet {
@@ -110,6 +110,8 @@ void discover_atapi_drive();
  *  functions to read data on the drive
  */
 
+#define BLOCK_SIZE 8192
+
 int send_packet(struct SCSI_packet *pkt, u16 drive,
                 u16 size);
 void *read_block(size_t lba);
@@ -117,5 +119,7 @@ void *read_block(size_t lba);
 typedef struct list_atapi_drive {
     ulist *ulist;
 } list_atapi_drive;
+
+void init_ATAPI_driver();
 
 #endif /* !ATAPI_H_ */
